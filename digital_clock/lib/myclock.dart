@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:intl/intl.dart';
 import 'dart:math' as math;
 
@@ -19,22 +20,21 @@ class _MyFlutterClockState extends State<MyFlutterClock>
   String millisecond;
   String day;
   String month;
-  Color red = Color(0xffdb3236);
-  Color blue = Color(0xff4885ed);
-  Color green = Color(0xff3cba54);
   Animation<Color> animation;
   AnimationController _backgroundController;
-  AnimationController _turnController;
+  Color endColor = Color(0xfff5af19);
+  Color beginColor = Color(0xfff12711);
+
   @override
   void initState() {
     super.initState();
     _backgroundController = AnimationController(
-      duration: const Duration(seconds: 10),
+      duration: const Duration(seconds: 3),
       vsync: this,
     );
     animation = ColorTween(
-      begin: Colors.black,
-      end: Colors.blueGrey[300],
+      begin: Colors.blue[50],
+      end: Colors.orange,
     ).animate(_backgroundController)
       ..addStatusListener((status) {
         if (status == AnimationStatus.completed) {
@@ -61,6 +61,10 @@ class _MyFlutterClockState extends State<MyFlutterClock>
     Timer(Duration(milliseconds: 100), _updateTimer);
   }
 
+  final Shader linearGradient = LinearGradient(
+    colors: <Color>[Color(0xffff4B2B), Color(0xffff4B2B)],
+  ).createShader(Rect.fromLTWH(0.0, 0.0, 200.0, 70.0));
+
   Size size;
   @override
   Widget build(BuildContext context) {
@@ -71,11 +75,32 @@ class _MyFlutterClockState extends State<MyFlutterClock>
         child: AspectRatio(
           child: Stack(children: <Widget>[
             Container(
-              color: animation.value,
+              color: Colors.black,
+              alignment: Alignment.center,
+              child: Opacity(
+                opacity: 0.4,
+                child: Container(
+                  height: size.width > 400 ? 40 : 30,
+                  width: size.width > 400 ? 40 : 30,
+                  decoration: BoxDecoration(
+                      gradient: RadialGradient(colors: [
+                        beginColor,
+                        endColor,
+                        Colors.blue,
+                        Colors.white
+                      ]),
+                      borderRadius: BorderRadius.circular(
+                        size.width > 400 ? 40 : 30,
+                      )),
+                ),
+              ),
+            ),
+            Opacity(
+              opacity: 0.6,
               child: DrawnHand(
-                color: Colors.green,
+                color: animation.value,
                 size: 0.65,
-                thickness: 4,
+                thickness: size.width < 400 ? 6 : 10,
                 angleRadians: (math.pi / 30) * double.parse(second),
               ),
             ),
@@ -84,18 +109,11 @@ class _MyFlutterClockState extends State<MyFlutterClock>
               margin: size.width > 600 ? EdgeInsets.all(20) : null,
               decoration: BoxDecoration(
                   border: Border.all(
-                      width: size.width < 400 ? 10 : 40, color: Colors.white),
-                  borderRadius: BorderRadius.circular(40)),
+                      width: size.width < 400 ? 10 : 30,
+                      color: animation.value),
+                  borderRadius:
+                      BorderRadius.circular(size.width < 400 ? 40 : 80)),
             ),
-            // size.width < 400
-            //     ? Container()
-            //     : Container(
-            //         margin: EdgeInsets.only(bottom: 5),
-            //         alignment: Alignment.bottomCenter,
-            //         child: FlutterLogo(
-            //           size: 30,
-            //         ),
-            //       ),
             Container(
               alignment: Alignment.center,
               child: FlareActor(
@@ -113,23 +131,67 @@ class _MyFlutterClockState extends State<MyFlutterClock>
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  Text("$hour : $minute",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 40,
+                  RichText(
+                    text: TextSpan(children: [
+                      TextSpan(
+                        text: hour,
+                        style: TextStyle(
+                          fontSize:
+                              size.width > 600 ? size.width / 4 * 0.18 : 40,
+                          fontFamily: 'Rajdhani',
+                          color: Colors.orange,
+                          fontWeight: FontWeight.bold,
+                          // foreground: Paint()..shader = linearGradient,
+                        ),
+                      ),
+                      TextSpan(
+                        text: ' : ',
+                        style: TextStyle(
+                          fontSize:
+                              size.width > 600 ? size.width / 4 * 0.18 : 40,
+                          fontFamily: 'Rajdhani',
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          // foreground: Paint()..shader = linearGradient,
+                        ),
+                      ),
+                      TextSpan(
+                        text: minute,
+                        style: TextStyle(
+                          fontSize:
+                              size.width > 600 ? size.width / 4 * 0.18 : 40,
+                          fontFamily: 'Rajdhani',
+                          color: Colors.green,
+                          fontWeight: FontWeight.bold,
+                          // foreground: Paint()..shader = linearGradient,
+                        ),
+                      )
+                    ]),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(top: 20),
+                    child: Text("$second",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize:
+                                size.width > 600 ? size.width / 4 * 0.3 : 60,
+                            color: Colors.white,
+                            fontFamily: 'Rajdhani',
+                            letterSpacing: 5,
+                            shadows: [])),
+                  ),
+                  SizedBox(height: 20),
+                  Text(
+                    DateFormat(
+                      'EE, d MMM, yyyy',
+                    ).format(dateTime),
+                    style: TextStyle(
+                        color: Colors.blue[200],
+                        fontSize: 18,
                         fontFamily: 'Rajdhani',
-                        color: blue,
-                        fontWeight: FontWeight.bold,
-                      )),
-                  Text("$second",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 100,
-                        color: red,
-                        fontFamily: 'Rajdhani',
-                      )),
-                  Text(DateFormat('EE, d MMM, yyyy').format(dateTime))
+                        fontWeight: FontWeight.bold),
+                  )
                 ],
               ),
             )
@@ -202,6 +264,7 @@ class _HandPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final center = (Offset.zero & size).center;
+    var rect = Offset.zero & size;
     // We want to start at the top, not at the x-axis, so add pi/2.
     final angle = angleRadians - math.pi / 2.0;
     final length = size.shortestSide * 0.5 * handSize;
@@ -210,7 +273,13 @@ class _HandPainter extends CustomPainter {
       ..color = color
       ..strokeWidth = lineWidth
       ..strokeCap = StrokeCap.square;
-
+    // linePaint.shader = LinearGradient(
+    //     begin: Alignment.centerLeft,
+    //     end: Alignment.centerRight,
+    //     colors: [
+    //       Colors.greenAccent,
+    //       Colors.orange,
+    //     ]).createShader(rect);
     canvas.drawLine(center, position, linePaint);
   }
 

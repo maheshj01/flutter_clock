@@ -22,6 +22,7 @@ class _DigitalClockState extends State<DigitalClock> {
   Widget build(BuildContext context) {
     return MaterialApp(
         darkTheme: ThemeData.dark(),
+        debugShowCheckedModeBanner: false,
         theme: ThemeData(
             textTheme: TextTheme(body1: TextStyle(color: Colors.white))),
         home: MyFlutterClock());
