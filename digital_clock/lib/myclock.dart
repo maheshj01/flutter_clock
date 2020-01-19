@@ -65,7 +65,7 @@ class _MyFlutterClockState extends State<MyFlutterClock>
   @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
-    // print(size.width);
+    // print(size.height);
     return Scaffold(
       body: Center(
         child: AspectRatio(
@@ -116,10 +116,15 @@ class _MyFlutterClockState extends State<MyFlutterClock>
                   Text("$hour : $minute",
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                          fontSize: 50, fontFamily: 'Rajdhani', color: blue)),
+                        fontSize: 40,
+                        fontFamily: 'Rajdhani',
+                        color: blue,
+                        fontWeight: FontWeight.bold,
+                      )),
                   Text("$second",
                       textAlign: TextAlign.center,
                       style: TextStyle(
+                        fontWeight: FontWeight.bold,
                         fontSize: 100,
                         color: red,
                         fontFamily: 'Rajdhani',
