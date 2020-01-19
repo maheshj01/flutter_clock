@@ -2,14 +2,25 @@
 
 Welcome to Flutter Clock!
 
-See [flutter.dev/clock](https://flutter.dev/clock) for how to get started, submission requirements, contest rules, and FAQs.
+This app is my submission to flutter clock contest
+See the [source code here](https://github.com/maheshmnj/flutter_clock/tree/master/digital_clock) you can also see the [live version of the app here](https://maheshmnj.github.io/clock).
 
-See a [live demo](https://maryx.github.io/flutter_clock) with Flutter for Web!
+## Sample Pictures
 
-Example [Analog Clock](analog_clock)
 
-<img src='analog_clock/analog.gif' width='350'>
+### Web
+![](https://user-images.githubusercontent.com/31410839/72684755-4e24cb00-3b09-11ea-9213-65c4879ec53c.png)  
 
-Example [Digital Clock](digital_clock)
+### Mobile
+<p align="center">
+<img src="https://user-images.githubusercontent.com/31410839/72684760-52e97f00-3b09-11ea-91c0-316984dc637a.png">
+</p>
 
-<img src='digital_clock/digital.gif' width='350'>
+### Landscape
+<p align="center">
+<img src="https://user-images.githubusercontent.com/31410839/72684766-5bda5080-3b09-11ea-886c-ccb4cb04adeb.png"></p> 
+
+### Portrait
+<p align="center">
+<img src="https://user-images.githubusercontent.com/31410839/72684762-54b34280-3b09-11ea-8839-a064b8185400.png">
+</p>
