@@ -13,15 +13,15 @@ class MyFlutterClock extends StatefulWidget {
 
 class _MyFlutterClockState extends State<MyFlutterClock>
     with TickerProviderStateMixin {
-  DateTime dateTime;
-  String hour;
-  String minute;
-  String second;
-  String millisecond;
-  String day;
-  String month;
-  Animation<Color> animation;
-  AnimationController _backgroundController;
+  late DateTime dateTime;
+  late String hour;
+  late String minute;
+  late String second;
+  late String millisecond;
+  late String day;
+  late String month;
+  late Animation<Color?> animation;
+  late AnimationController _backgroundController;
   Color endColor = Color(0xfff5af19);
   Color beginColor = Color(0xfff12711);
 
@@ -65,7 +65,7 @@ class _MyFlutterClockState extends State<MyFlutterClock>
     colors: <Color>[Color(0xffff4B2B), Color(0xffff4B2B)],
   ).createShader(Rect.fromLTWH(0.0, 0.0, 200.0, 70.0));
 
-  Size size;
+  late Size size;
   @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
@@ -98,7 +98,7 @@ class _MyFlutterClockState extends State<MyFlutterClock>
             Opacity(
               opacity: 0.6,
               child: DrawnHand(
-                color: animation.value,
+                color: animation.value!,
                 size: 0.65,
                 thickness: size.width < 400 ? 6 : 10,
                 angleRadians: (math.pi / 30) * double.parse(second),
@@ -110,7 +110,7 @@ class _MyFlutterClockState extends State<MyFlutterClock>
               decoration: BoxDecoration(
                   border: Border.all(
                       width: size.width < 400 ? 10 : 30,
-                      color: animation.value),
+                      color: animation.value!),
                   borderRadius:
                       BorderRadius.circular(size.width < 400 ? 40 : 80)),
             ),
@@ -208,10 +208,10 @@ class DrawnHand extends Hand {
   ///
   /// All of the parameters are required and must not be null.
   const DrawnHand({
-    @required Color color,
-    @required this.thickness,
-    @required double size,
-    @required double angleRadians,
+    required Color color,
+    required this.thickness,
+    required double size,
+    required double angleRadians,
   })  : assert(color != null),
         assert(thickness != null),
         assert(size != null),
@@ -245,10 +245,10 @@ class DrawnHand extends Hand {
 /// [CustomPainter] that draws a clock hand.
 class _HandPainter extends CustomPainter {
   _HandPainter({
-    @required this.handSize,
-    @required this.lineWidth,
-    @required this.angleRadians,
-    @required this.color,
+    required this.handSize,
+    required this.lineWidth,
+    required this.angleRadians,
+    required this.color,
   })  : assert(handSize != null),
         assert(lineWidth != null),
         assert(angleRadians != null),
@@ -297,9 +297,9 @@ abstract class Hand extends StatelessWidget {
   ///
   /// All of the parameters are required and must not be null.
   const Hand({
-    @required this.color,
-    @required this.size,
-    @required this.angleRadians,
+    required this.color,
+    required this.size,
+    required this.angleRadians,
   })  : assert(color != null),
         assert(size != null),
         assert(angleRadians != null);
